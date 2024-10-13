@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gas Agency Complaint Management</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
+    <script src="script.js" defer></script> <!-- Link to your JavaScript file -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            display: none;
+            /* Hide all forms initially */
+            width: 300px;
+            /* Set a fixed width for forms */
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #initialButtons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #dashboard {
+            display: none;
+            /* Hide dashboard initially */
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="initialButtons">
+        <button id="showLogin">Login</button>
+        <button id="showRegister">Register</button>
+    </div>
+
+    <!-- Registration Form -->
+    <form id="registrationForm">
+        <h2>Register</h2>
+        <input type="text" placeholder="Name" required>
+        <input type="email" placeholder="Email" required>
+        <input type="tel" placeholder="Phone Number" required>
+        <input type="password" placeholder="Password" required>
+        <button type="submit">Register</button>
+        <button type="button" onclick="goBack()">Back</button>
+    </form>
+
+    <!-- Login Form -->
+    <form id="loginForm">
+        <h2>Login</h2>
+        <input type="email" placeholder="Email" required>
+        <input type="password" placeholder="Password" required>
+        <button type="submit">Login</button>
+        <button type="button" onclick="goBack()">Back</button>
+    </form>
+
+    <!-- Dashboard -->
+    <div id="dashboard">
+        <h2>Welcome, <span id="userName">User</span></h2>
+        <button onclick="showComplaintForm()">Raise a Complaint</button>
+        <button onclick="showTracking()">Track Complaint</button>
+    </div>
+
+    <!-- Complaint Submission Form -->
+    <form id="complaintForm" style="display: none;">
+        <h2>Raise a Complaint</h2>
+        <select id="complaintType">
+            <option value="delivery">Delivery Issue</option>
+            <option value="quality">Quality Issue</option>
+            <option value="service">Service Outage</option>
+        </select>
+        <textarea placeholder="Short Description" required></textarea>
+        <button type="submit">Submit Complaint</button>
+        <button type="button" onclick="goBack()">Back</button>
+    </form>
+
+    <!-- Complaint Tracking -->
+    <form id="trackingForm" style="display: none;">
+        <h2>Track Complaint</h2>
+        <input type="text" placeholder="Enter Ticket ID" required>
+        <button type="submit">Track</button>
+        <button type="button" onclick="goBack()">Back</button>
+    </form>
+
+    <script>
+        // JavaScript functionality
+
+        // Show Registration Form
+        document.getElementById('showRegister').addEventListener('click', function () {
+            document.getElementById('initialButtons').style.display = 'none';
+            document.getElementById('registrationForm').style.display = 'block';
+        });
+
+        // Show Login Form
+        document.getElementById('showLogin').addEventListener('click', function () {
+            document.getElementById('initialButtons').style.display = 'none';
+            document.getElementById('loginForm').style.display = 'block';
+        });
+
+        // Handle Registration
+        document.getElementById('registrationForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            // Here, you would typically send the registration data to your backend.
+            alert('Registration successful!');
+            // Hide the registration form and show the login form
+            this.style.display = 'none';
+            document.getElementById('loginForm').style.display = 'block';
+        });
+
+        // Handle Login
+        document.getElementById('loginForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            // Here, you would typically verify the login credentials with your backend.
+            alert('Login successful!');
+            // Hide the login form and show the dashboard
+            this.style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            document.getElementById('userName').innerText = 'User'; // Replace with actual user name
+        });
+
+        // Show Complaint Form
+        function showComplaintForm() {
+            document.getElementById('complaintForm').style.display = 'block';
+            document.getElementById('trackingForm').style.display = 'none';
+        }
+
+        // Show Tracking Form
+        function showTracking() {
+            document.getElementById('trackingForm').style.display = 'block';
+            document.getElementById('complaintForm').style.display = 'none';
+        }
+
+        // Go back to initial buttons or previous form
+        function goBack() {
+            document.getElementById('registrationForm').style.display = 'none';
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('complaintForm').style.display = 'none';
+            document.getElementById('trackingForm').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('initialButtons').style.display = 'flex'; // Show initial buttons again
+        }
+
+        // Handle Complaint Submission
+        document.getElementById('complaintForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const complaintType = document.getElementById('complaintType').value;
+            const description = document.querySelector('textarea').value;
+
+            // Here, you would typically send the complaint data to your backend
+            alert(`Complaint submitted! Type: ${complaintType}, Description: ${description}`);
+            // Generate a ticket ID (for demonstration purposes, you can use a random number or timestamp)
+            const ticketID = Math.floor(Math.random() * 10000);
+            alert(`Your Ticket ID is: ${ticketID}`);
+            // Optionally reset the form
+            this.reset();
+        });
+
+        // Handle Complaint Tracking
+        document.getElementById('trackingForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const ticketID = document.querySelector('input[type="text"]').value;
+
+            // Here, you would typically fetch the complaint status from your backend
+            alert(`Tracking complaint with Ticket ID: ${ticketID}`);
+            // Reset the form
+            this.reset();
+        });
+    </script>
+
+</body>
+
+</html>
